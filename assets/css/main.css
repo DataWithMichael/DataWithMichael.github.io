@@ -720,6 +720,11 @@ section,
 .hero .hero-content h1 .highlight {
   color: var(--accent-color);
   position: relative;
+  /* prevent the highlight underline from splitting across lines */
+  display: inline-block;
+  white-space: nowrap;
+  /* small padding so the underline (::after) sits clear of text descenders */
+  padding-bottom: 0.15rem;
 }
 
 .hero .hero-content h1 .highlight::after {
