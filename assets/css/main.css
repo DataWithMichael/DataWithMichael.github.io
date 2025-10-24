@@ -730,6 +730,14 @@ section,
   padding-bottom: 0;
 }
 
+/* Stronger reset to override any other rules (including vendor/bootstrap) that may add underlines */
+.hero .hero-content h1 .highlight,
+.hero .hero-content h1 .highlight * {
+  text-decoration: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
 .hero .hero-content h1 .highlight::after {
   /* underline intentionally removed per user request */
   display: none;
