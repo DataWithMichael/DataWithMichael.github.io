@@ -723,8 +723,11 @@ section,
   /* prevent the highlight underline from splitting across lines */
   display: inline-block;
   white-space: nowrap;
-  /* small padding so the underline (::after) sits clear of text descenders */
-  padding-bottom: 0.15rem;
+  /* remove decorative underline and extra padding */
+  text-decoration: none;
+  border-bottom: none;
+  box-shadow: none;
+  padding-bottom: 0;
 }
 
 .hero .hero-content h1 .highlight::after {
