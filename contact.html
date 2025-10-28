@@ -149,9 +149,9 @@
                   </div>
 
                   <div class="col-12 text-center">
-                    <div class="loading">Loading</div>
-                    <div class="error-message"></div>
-                    <div class="sent-message">Your message has been sent. Thank you!</div>
+                    <div class="loading" style="display: none;">Loading</div>
+                    <div class="error-message" style="display: none;"></div>
+                    <div class="sent-message" style="display: none;">Your message has been sent. Thank you!</div>
 
                     <button type="submit" class="btn">Send Message</button>
                   </div>
@@ -215,13 +215,14 @@
       // If redirected back with ?success=true (Formsubmit _next), show the sent-message box
       const params = new URLSearchParams(window.location.search);
       if (params.get('success') === 'true') {
-        const sent = document.querySelector('.sent-message');
-        const loading = document.querySelector('.loading');
-        const error = document.querySelector('.error-message');
         const form = document.querySelector('.contact-form form');
-        if (loading) loading.classList.remove('d-block');
-        if (error) { error.classList.remove('d-block'); error.innerHTML = ''; }
-        if (sent) sent.classList.add('d-block');
+        // Hide loading and error messages
+        const elements = document.querySelectorAll('.loading, .error-message');
+        elements.forEach(el => el.style.display = 'none');
+        // Show success message
+        const sent = document.querySelector('.sent-message');
+        if (sent) sent.style.display = 'block';
+        // Reset the form
         if (form) form.reset();
         // Clean the URL so refresh doesn't re-show the message
         const url = new URL(window.location);
