@@ -137,6 +137,14 @@ h6 {
   }
 }
 
+/* Ensure message UI is hidden by default for static forms that don't use the php-email-form wrapper.
+   Scripts toggle Bootstrap's `d-block` utility class to show these when needed. */
+.loading,
+.error-message,
+.sent-message {
+  display: none;
+}
+
 /*--------------------------------------------------------------
 # Global Header
 --------------------------------------------------------------*/
