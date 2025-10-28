@@ -121,13 +121,10 @@
             <div class="contact-form" data-aos="fade-up" data-aos-delay="300">
               <h3>Get In Touch</h3>
               
-              <form action="https://formsubmit.co/michaelcg77@outlook.com" method="POST" data-aos="fade-up" data-aos-delay="200">
-                <!-- Using Formsubmit (works with static hosts like GitHub Pages).
-                     First submission will send a confirmation to the email address below — click it to activate forwarding.
-                     Hidden fields: disable Formsubmit captcha, set subject, redirect back to this page with a success flag, and add a honeypot to reduce spam. -->
+              <form action="https://formsubmit.co/ajax/michaelcg77@outlook.com" method="POST" id="contactForm" data-aos="fade-up" data-aos-delay="200">
+                <!-- Using Formsubmit AJAX endpoint (works with static hosts like GitHub Pages) -->
                 <input type="hidden" name="_captcha" value="false">
                 <input type="hidden" name="_subject" value="Website message: Contact form">
-                <input type="hidden" name="_next" value="contact.html?success=true">
                 <!-- honeypot field (should remain empty) -->
                 <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
                 <div class="row gy-4">
@@ -211,25 +208,51 @@
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
   <script>
-    (function(){
-      // If redirected back with ?success=true (Formsubmit _next), show the sent-message box
-      const params = new URLSearchParams(window.location.search);
-      if (params.get('success') === 'true') {
-        const form = document.querySelector('.contact-form form');
-        // Hide loading and error messages
-        const elements = document.querySelectorAll('.loading, .error-message');
-        elements.forEach(el => el.style.display = 'none');
-        // Show success message
-        const sent = document.querySelector('.sent-message');
-        if (sent) sent.style.display = 'block';
-        // Reset the form
-        if (form) form.reset();
-        // Clean the URL so refresh doesn't re-show the message
-        const url = new URL(window.location);
-        url.searchParams.delete('success');
-        window.history.replaceState({}, document.title, url.pathname + url.hash);
-      }
-    })();
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Show loading message
+      const loadingMessage = document.querySelector('.loading');
+      const errorMessage = document.querySelector('.error-message');
+      const sentMessage = document.querySelector('.sent-message');
+      const form = this;
+
+      // Reset messages
+      loadingMessage.style.display = 'block';
+      errorMessage.style.display = 'none';
+      sentMessage.style.display = 'none';
+
+      // Get form data
+      const formData = new FormData(form);
+      const data = {};
+      formData.forEach((value, key) => data[key] = value);
+
+      // Send form data using fetch
+      fetch(form.action, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then(data => {
+        loadingMessage.style.display = 'none';
+        if (data.success) {
+          sentMessage.style.display = 'block';
+          form.reset();
+        } else {
+          errorMessage.textContent = 'Something went wrong. Please try again.';
+          errorMessage.style.display = 'block';
+        }
+      })
+      .catch(error => {
+        loadingMessage.style.display = 'none';
+        errorMessage.textContent = 'Something went wrong. Please try again.';
+        errorMessage.style.display = 'block';
+      });
+    });
   </script>
 
 </body>
